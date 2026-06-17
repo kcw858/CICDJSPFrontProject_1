@@ -135,6 +135,7 @@ public class FoodModel {
 			//{no:1,name="",poster:"" ...}
 			if(i == 0)
 			{
+				obj.put("ss",ss);
 				obj.put("curpage",curpage);
 				obj.put("totalpage",totalpage);
 				obj.put("startPage",startPage);
