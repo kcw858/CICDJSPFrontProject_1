@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 
+	VO 등록
+	mapper등록: sql
+	환경설정: Connection
+	
+	dtd: XML정의 파일: 속성 / 태그 다음 태그가 뭐가 와야하는지 ==> MyBatis에서 제공
+	
+	SpringBoot는 yml / properties 사용
+				=== 단점: 들여쓰기 (CI/CD)
+-->
+<configuration>
+	<!-- VO 등록 -->
+	<typeAliases>
+		<typeAlias type="com.sist.vo.FoodVO" alias="FoodVO"/>
+	</typeAliases>
+	
+	<!-- Connection: 오라클 정보 전송 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+				<property name="username" value="hr"/>
+				<property name="password" value="happy"/>
+				<!-- 
+					type: class명
+					PooledDataSource
+					
+					property: PooledDataSource이 가지고 있는 변수명
+					
+					public class PooledDataSource
+					{
+						private String driver,url,username,password;
+						= setDriver setUrl ...
+						= DI(의존성 주입)
+					}
+					
+					ConnectionPool
+					 = maxActive / maxIdle / maxWait
+					       8		  8		  10000
+					Connection이 만들어진다: getConnection() / disConnection()
+										= SqlSessionFactory
+										= Connection 주소 => SqlSession
+				 -->
+			</dataSource>
+		</environment>
+	</environments>
+	<!--  SQL 문장 저장: PreparedStatement / ResultSet -->
+	<mappers>
+		<mapper resource="com/sist/dao/food-mapper.xml"/>
+		<!-- 등록 => 어노테이션으로 변경 -->
+	</mappers>
+</configuration>
