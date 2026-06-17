@@ -51,7 +51,38 @@
 		$(function(){
 			commons(1)
 			$('.btns').on('click',function(){
-				commons(1)
+				let types=[]
+				let count=$('input[name=type]:checked').length
+				if(count ===0)
+				{
+					alert("체크박스에 체크하세요")
+					return
+				}
+				$('input[name=type]:checked').each(function(){
+					types.push($(this).val())
+				})
+				
+				let ss =$('#ss').val()
+				if(ss.trim()==="")
+				{
+					$('#ss').focus()
+					return
+				}
+				let column=$('#column').val()
+				$.ajax({
+					type:"POST",
+					url:'../food/find_ajax.do',
+					data:{"ss":ss,"column":column,"type":types,"page":1},
+					traditional:true, //자바에서 배열을 받을 때 사용
+					success:function(result)
+					{
+						let json = JSON.parse(result)
+						console.log(json)
+						$('#ss').val(json[0].ss)
+						jsonView(json)
+					}
+				})
+				
 			})
 		})
 		function jsonView(json)
